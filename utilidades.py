@@ -87,5 +87,3 @@ def mostrar_informacion(estudiantes):
   
   if not encontrado:
     print('No se ha encontrado el RUT ingresado.')
-
-print('Bienvenidos a Libro Virtual')
