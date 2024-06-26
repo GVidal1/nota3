@@ -19,7 +19,7 @@ while True:
     while True:
       nombre_apellido = input('Ingrese el nombre y apellido del alumno: ').title()
       if nombre_apellido == nombre_apellido.isdigit():
-        print('Valor invalido')
+        print('Valor inválido')
       else:
         break
     curso = input('Ingrese el curso o sección del alumno: ').upper()
@@ -52,9 +52,31 @@ while True:
         break
       if not encontrado:
         print('No se ha encontrado el RUT ingresado.')
+  #ingresar anotacion del alumno
+  if opcion == 3:
+    print(f'Usted a seleccionado la opción: {menu[opcion-1]}')
+    buscar = input('Ingrese el RUT (formato: 123456789) del alumno a consultar: ')
+    encontrado = False
+    for alumno in estudiantes:
+      if alumno['rut'] == buscar:
+        encontrado = True
+        if 'anotaciones' in estudiantes:
+          print(f'Observaciones del alumno {alumno["nombre_apellido"]:}')
+          print(alumno['anotaciones'])
+        else:
+          print(f'No se han registrado anotaciones/observaciones para el alumno {alumno["nombre_apellido"]}')
+        observacion = input('Ingrese la anotacion/observacion del alumno: ')
+        if 'anotaciones' in alumno:
+          alumno['anotaciones'] += f'\n{observacion}'
+        else:
+          alumno['anotaciones'] = f'{observacion}'
+        print(f'anotaciones/observaciones del alumno {alumno["nombre_apellido"]}: {alumno["anotaciones"]}')
+        break
+      if not encontrado:
+        print('No se ha encontrado el RUT ingresado.')
   #opcion4: Muestra el registro de cada estudiante y su informacion ingresada.
   if opcion == 4:
-    print(f'Usted a seleccionado {menu[opcion-1]}')
+    print(f'Usted ha seleccionado {menu[opcion-1]}')
     buscar = input('Ingrese el RUT (formato 123456789) del alumno a consultar: ')
     encontrado = False
     for alumno in estudiantes:
