@@ -1,4 +1,6 @@
-menu = ['Ingresar alumno', 'Ingresar nota', 'ingresar Anotacion', 'Consultar Alumno', 'Salir']
+menu = ['Ingresar alumno o modificar alumno', 'Ingresar o modificar nota', 'Eliminar Estudiante', 'Consultar Alumno', 'Salir']
+
+estudiantes = []
 
 def consultar_menu():
   for cont, elemento in enumerate(menu, start=1):
@@ -33,7 +35,7 @@ def iniciar_sesion():
       if cont == 0:
         print('Ha superado los intentos disponibles. Vuelva a iniciar el programa para volver a intentarlo.')
         break
-      
+    break
 def registrar_alumno(estudiantes):
   while True:
     rut = input('Ingrese el RUT del alumno en formato 123456789 (sin puntos ni guión) para ingresar o modificar un alumno: ')
@@ -55,8 +57,7 @@ def registrar_alumno(estudiantes):
     'rut': rut,
     'nombre_apellido': nombre_apellido,
     'curso': curso,
-    'nota': '',
-    'anotaciones': ''
+    'nota': ''
   }
   
   estudiantes.append(alumno)
@@ -66,44 +67,57 @@ def registrar_alumno(estudiantes):
 def ingresar_nota(estudiantes):
   buscar = input('Ingrese el RUT (formato: 123456789) del alumno a consultar: ')
   encontrado = False
-  
+
   for alumno in estudiantes:
     if alumno['rut'] == buscar:
-      encontrado = True
-      if alumno['nota']:
-          print(f'Notas del alumno {alumno["nombre_apellido"]}:')
-          print(alumno['nota'])
-      else:
-          print(f'No se han registrado notas para el alumno {alumno["nombre_apellido"]}.')
-      
-      nota = input('Ingrese la nota del alumno: ')
-      alumno['nota'] += f'\n{nota}' if alumno['nota'] else nota
-      print(f'Notas del alumno {alumno["nombre_apellido"]}: {alumno["nota"]}')
-      break
+        encontrado = True
+        opcion = input('Ingrese 1 para ingresar nota\nIngrese 2 para modificar nota\nIngrese aquí: ')
+        
+        if opcion == '1':
+            if alumno['nota']:
+                print(f'Notas del alumno {alumno["nombre_apellido"]}:')
+                print(alumno['nota'])
+            else:
+                print(f'No se han registrado notas para el alumno {alumno["nombre_apellido"]}.')
+            
+            nota = input('Ingrese la nota del alumno: ')
+            alumno['nota'] += f'\n{nota}' if alumno['nota'] else nota
+            print(f'Notas del alumno {alumno["nombre_apellido"]}: {alumno["nota"]}')
+        
+        elif opcion == '2':
+            modificar_nota(alumno)
+        
+        else:
+            print('Opción inválida.')
+        
+        break
 
   if not encontrado:
-    print('No se ha encontrado el RUT ingresado.')
+      print('No se ha encontrado el RUT ingresado.')
+
+def modificar_nota(alumno):
+  if alumno['nota']:
+    print(f'Notas actuales del alumno {alumno["nombre_apellido"]}:')
+    print(alumno['nota'])
+    nueva_nota = input('Ingrese la nota modificada del alumno: ')
+    alumno['nota'] = nueva_nota
+    print(f'Nota modificada correctamente.')
+  else:
+    print(f'No se han registrado notas para el alumno {alumno["nombre_apellido"]}. No se puede modificar.')
     
-def ingresar_anotacion(estudiantes):
-  buscar = input('Ingrese el RUT (formato: 123456789) del alumno a consultar: ')
+def eliminar_estudiantes(estudiantes):
+  buscar = input('Ingrese el RUT del alumno a eliminar: ')
   encontrado = False
-  
-  for alumno in estudiantes:
-    if alumno['rut'] == buscar:
-      encontrado = True
-      if alumno['anotaciones']:
-          print(f'Observaciones del alumno {alumno["nombre_apellido"]}:')
-          print(alumno['anotaciones'])
-      else:
-          print(f'No se han registrado anotaciones/observaciones para el alumno {alumno["nombre_apellido"]}.')
-      
-      observacion = input('Ingrese la anotación/observación del alumno: ')
-      alumno['anotaciones'] += f'\n{observacion}' if alumno['anotaciones'] else observacion
-      print(f'Anotaciones/observaciones del alumno {alumno["nombre_apellido"]}: {alumno["anotaciones"]}')
-      break
-  
+
+  for i, alumno in enumerate(estudiantes):
+      if alumno['rut'] == buscar:
+          encontrado = True
+          del estudiantes[i]
+          print('Estudiante eliminado.')
+          break
+
   if not encontrado:
-    print('No se ha encontrado el RUT ingresado.')
+      print('Estudiante no encontrado.')
 
 def mostrar_informacion(estudiantes):
   buscar = input('Ingrese el RUT (formato 123456789) del alumno a consultar: ')
@@ -112,7 +126,7 @@ def mostrar_informacion(estudiantes):
   for alumno in estudiantes:
     if alumno['rut'] == buscar:
         encontrado = True
-        print(f'Alumno {alumno["nombre_apellido"]}\nRUT: {alumno["rut"]}\nCurso/Sección: {alumno["curso"]}\nNotas: {alumno["nota"]}\nObservaciones/Anotaciones: {alumno["anotaciones"]}')
+        print(f'Alumno {alumno["nombre_apellido"]}\nRUT: {alumno["rut"]}\nCurso/Sección: {alumno["curso"]}\nNotas: {alumno["nota"]}\n')
         break
   
   if not encontrado:
