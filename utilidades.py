@@ -3,7 +3,37 @@ menu = ['Ingresar alumno', 'Ingresar nota', 'ingresar Anotacion', 'Consultar Alu
 def consultar_menu():
   for cont, elemento in enumerate(menu, start=1):
     print(cont, '-' ,elemento)
-    
+
+def iniciar_sesion():
+  valid_user = 'admin'
+  valid_passwrod = '12345'
+  usuario_ingresado = False
+  cont = 5
+  while True:
+    while cont > 0:
+      usuario = input('Ingrese el nombre de usuario: ')
+      if usuario == valid_user:
+        print('Usuario correcto.')
+        usuario_ingresado = True
+        break
+      else:
+        print('usuario incorrecto. Intente Nuevamente.')
+        cont -= 1
+      if cont == 0:
+        print('Ha superado los intentos disponibles. Vuelva a iniciar el programa para volver a intentarlo.')
+        break
+    while True & usuario_ingresado == True:
+      password = input('Ingrese la contraseña: ')
+      if password == valid_passwrod:
+        print('Contraseña valida.')
+        break
+      else:
+        print('Contraseña inválida. intente nuevamente.')
+        cont -= 1
+      if cont == 0:
+        print('Ha superado los intentos disponibles. Vuelva a iniciar el programa para volver a intentarlo.')
+        break
+      
 def registrar_alumno(estudiantes):
   while True:
     rut = input('Ingrese el RUT del alumno en formato 123456789 (sin puntos ni guión) para ingresar o modificar un alumno: ')
